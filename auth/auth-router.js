@@ -37,7 +37,7 @@ router.post('/login', (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         // produce a token
-        const token = getJwtToken(user.username);
+        const token = getJwtToken(user);
 
         //send the token to the client
         res.status(200).json({
@@ -53,10 +53,11 @@ router.post('/login', (req, res) => {
     });
 });
 
-function getJwtToken(username) {
+function getJwtToken(user) {
+    console.log('SHOULD HAVE A DEP', user)
   const payload = {
-    username,
-    role: "student" // this will probably come from db
+    user
+    // role: "student" // this will probably come from db
   };
 
   const secret = process.env.JWT_SECRET || "is it secret";
